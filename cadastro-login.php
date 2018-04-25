@@ -54,9 +54,9 @@ if( isset($_GET['enviar']) ){
               </div>
                <?php if ($enviado) { ?>
                 <?php if ($status== 201) { ?>
-                  <div>Cadastro realizado com sucesso ...</div>
+                  <div class="user-required__data-box__message-box-title">Cadastro realizado com sucesso ...</div>
                 <?php }else{ ?>
-                  <div><?php echo "Erro ao enviar Cadastro, Resposta do servidor $json_response " ?></div>
+                  <div class="user-required__data-box__message-box-title"><?php echo "Erro ao enviar Cadastro, Resposta do servidor $json_response " ?></div>
                 <?php } ?>
               <?php } ?> 
               <div class="user-required__data-box__form">
@@ -83,7 +83,6 @@ if( isset($_GET['enviar']) ){
                   </fieldset>
                 </form>
                 <p class="user-required__data-box__message-box-short-description">
-                  <?php } ?>
                     Caso seja registrado efetue o login logo abaixo.
                 </p>
                 <form action="https://expert-curso-online.herokuapp.com/api/v1/alunos/logar.json" method="get" id="for_user-login">
