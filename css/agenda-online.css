@@ -1037,19 +1037,7 @@ min-height: 100%;
     height: 100%;
 }
 
-.user-required__sidebar__budgets-box {
 
-}
-
-.user-required__sidebar__budgets-box__ssl {
-    display: block;
-    height: auto;
-    width: 50%;
-    margin: 0 auto;
-    border-radius: 5%;
-    margin-bottom: 0;
-
-}
 
 .user-required__col-data {
     width: 100%;

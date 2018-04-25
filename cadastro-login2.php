@@ -1,35 +1,30 @@
 <?php
+
 $enviado = false;
 
 if( isset($_GET['enviar']) ){
-  $usuario = $_POST;
-  $url = "https://expert-curso-online.herokuapp.com/alunos.json";    
-  $content = json_encode($usuario);
-  
-  $curl = curl_init($url);
-  curl_setopt($curl, CURLOPT_HEADER, false);
-  curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-  curl_setopt($curl, CURLOPT_HTTPHEADER,
-          array("Content-type: application/json"));
-  curl_setopt($curl, CURLOPT_POST, true);
-  curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-  
-  $json_response = curl_exec($curl);
-  
-  $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-  
-  // if ( $status != 201 ) {
-  
-  //     die("Error: call to URL $url failed with status $status, response $json_response ");
-  
-  // }
-  
-  curl_close($curl);
-  
-  $response = json_decode($json_response, true);
-  $enviado = true;
-}
 
+  $url = 'https://expert-curso-online.herokuapp.com/alunos.json';
+
+  $data = array('usuario' => array('nome' => $_POST['nome'], 'email' => $_POST['email'], 'senha' => $_POST['senha'], 'telefone' => $_POST['telefone']));
+
+  $options = array(
+    'http' => array(
+      'method'  => 'POST',
+      'content' => http_build_query($data)
+    )
+  );
+
+  $context  = stream_context_create($options);
+  $result = file_get_contents($url, false, $context);
+   //if ($result !== FALSE) { 
+  //   // header("Location: http://example.com/myOtherPage.php");
+  //die($result);
+  //}
+
+  $enviado = true;
+
+}
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -52,38 +47,37 @@ if( isset($_GET['enviar']) ){
                   Se você ainda não for registrado preencha os dados de cadastro.
                 </p>
               </div>
-               <?php if ($enviado) { ?>
-                <?php if ($status== 201) { ?>
+              <?php if ($enviado) { ?>
+                <?php if ($result !== FALSE) { ?>
                   <div>Cadastro realizado com sucesso ...</div>
                 <?php }else{ ?>
-                  <div><?php echo "Erro ao enviar Cadastro, Resposta do servidor $json_response " ?></div>
+                  <div>Erro ao Cadastrar ...</div>
                 <?php } ?>
-              <?php } ?> 
+              <?php } ?>
               <div class="user-required__data-box__form">
-                <form action="cadastro-login.php?&enviar=true" method="post" id="for_user-register">
+                <form action="cadastro-login2.php?&enviar=true" method="post" id="for_user-register">
                   <fieldset>
                     <legend> Cadastrar-se</legend>
                     <div class="user-required__data-box__form-group">
                       <label for="register-fname" class="user-required__data-box__form-group__label">Nome</label>
-                      <input type="text" name="usuario[nome]" required id="register-fname" class="user-required__data-box__form-group__input" placeholder="ex. João Augusto Rodrigues" autocomplete="name" autofocus title="Digite o seu nome completo"> <br />
+                      <input type="text" name="nome" required id="register-fname" class="user-required__data-box__form-group__input" placeholder="ex. João Augusto Rodrigues" autocomplete="name" autofocus title="Digite o seu nome completo"> <br />
                     </div>
                     <div class="user-required__data-box__form-group">
                       <label for="register-email" class="user-required__data-box__form-group__label">Email</label>
-                      <input type="email" class="user-required__data-box__form-group__input" id="register-email" name="usuario[email]" required placeholder="ex. jrodrigues@meuemail.com" autocomplete="email" title="Digite um email de formato válido" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" > <br />
+                      <input type="email" class="user-required__data-box__form-group__input" id="register-email" name="email" required placeholder="ex. jrodrigues@meuemail.com" autocomplete="email" title="Digite um email de formato válido" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" > <br />
                     </div>
                     <div class="user-required__data-box__form-group">
                       <label for="register-password" class="user-required__data-box__form-group__label">senha</label>
-                      <input type="password" class="user-required__data-box__form-group__input" id="register-password" name="usuario[senha]" required autocomplete="off" placeholder="Crie uma senha " title="Digite uma senha" > <br />
+                      <input type="password" class="user-required__data-box__form-group__input" id="register-password" name="senha" required autocomplete="off" placeholder="Crie uma senha " title="Digite uma senha" > <br />
                     </div>
                     <div class="user-required__data-box__form-group">
                       <label for="register-tel" class="user-required__data-box__form-group__label">Telefone</label>
-                      <input type="tel" class="user-required__data-box__form-group__input" id="register-tel" name="usuario[telefone]" autocomplete="telephone" placeholder="ex.(51)4321-9876 " title="Digite seu telefone" > <br />
+                      <input type="tel" class="user-required__data-box__form-group__input" id="register-tel" name="telefone" autocomplete="telephone" placeholder="ex.(51)4321-9876 " title="Digite seu telefone" > <br />
                     </div>
                     <input type="submit" class="button button--primary user-required__data-box__form-button" value="Cadastrar">
                   </fieldset>
                 </form>
                 <p class="user-required__data-box__message-box-short-description">
-                  <?php } ?>
                     Caso seja registrado efetue o login logo abaixo.
                 </p>
                 <form action="https://expert-curso-online.herokuapp.com/api/v1/alunos/logar.json" method="get" id="for_user-login">
