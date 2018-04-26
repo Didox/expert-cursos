@@ -2,8 +2,8 @@
 $enviado = false;
 
 if( isset($_GET['enviar']) ){
-  $usuario = $_POST;
-  $url = "https://expert-curso-online.herokuapp.com/alunos.json";    
+  $usuario = $_POST['usuario'];
+  $url = 'https://expert-curso-online.herokuapp.com/api/v1/aluno/email.json';   
   $content = json_encode($usuario);
   
   $curl = curl_init($url);
@@ -30,6 +30,22 @@ if( isset($_GET['enviar']) ){
   $enviado = true;
 }
 
+  if(isset($_GET['logout'])){
+    setcookie ("aluno_id", "", time() + 3600); 
+    // header("Location: login.php");
+  }
+  
+  if(isset($_POST['email'])){
+    $json_file = file_get_contents("https://expert-curso-online.herokuapp.com/api/v1/alunos/logar.json?email=" . trim($_POST['email']) . "&senha=" . trim($_POST['senha']) . "");
+
+    if($json_file){
+      $aluno = json_decode($json_file, true);
+      setcookie("aluno_id", $aluno["id"]);
+      header("Location: cadastro-login.php");
+      die();
+    }
+  }
+
 ?>
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -53,10 +69,10 @@ if( isset($_GET['enviar']) ){
                 </p>
               </div>
                <?php if ($enviado) { ?>
-                <?php if ($status== 201) { ?>
+                <?php if ($status== 200) { ?>
                   <div class="user-required__data-box__message-box-title">Cadastro realizado com sucesso ...</div>
                 <?php }else{ ?>
-                  <div class="user-required__data-box__message-box-title"><?php echo "Erro ao enviar Cadastro, Resposta do servidor $json_response " ?></div>
+                  <div class="user-required__data-box__message-box-title"><?php echo "Erro ao enviar Cadastro, Resposta do servidor $status $json_response " ?></div>
                 <?php } ?>
               <?php } ?> 
               <div class="user-required__data-box__form">
@@ -72,20 +88,17 @@ if( isset($_GET['enviar']) ){
                       <input type="email" class="user-required__data-box__form-group__input" id="register-email" name="usuario[email]" required placeholder="ex. jrodrigues@meuemail.com" autocomplete="email" title="Digite um email de formato válido" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" > <br />
                     </div>
                     <div class="user-required__data-box__form-group">
-                      <label for="register-password" class="user-required__data-box__form-group__label">senha</label>
-                      <input type="password" class="user-required__data-box__form-group__input" id="register-password" name="usuario[senha]" required autocomplete="off" placeholder="Crie uma senha " title="Digite uma senha" > <br />
-                    </div>
-                    <div class="user-required__data-box__form-group">
                       <label for="register-tel" class="user-required__data-box__form-group__label">Telefone</label>
                       <input type="tel" class="user-required__data-box__form-group__input" id="register-tel" name="usuario[telefone]" autocomplete="telephone" placeholder="ex.(51)4321-9876 " title="Digite seu telefone" > <br />
                     </div>
                     <input type="submit" class="button button--primary user-required__data-box__form-button" value="Cadastrar">
                   </fieldset>
                 </form>
+               <?php if( !isset($_COOKIE["aluno_id"]) ){ ?>
                 <p class="user-required__data-box__message-box-short-description">
                     Caso seja registrado efetue o login logo abaixo.
                 </p>
-                <form action="https://expert-curso-online.herokuapp.com/api/v1/alunos/logar.json" method="get" id="for_user-login">
+                <form action="cadastro-login.php" method="post" id="for_user-login">
                   <fieldset>
                     <legend>Logar-se</legend>
                     <div class="user-required__data-box__form-group">
@@ -100,16 +113,13 @@ if( isset($_GET['enviar']) ){
                   </fieldset>
 
                 </form>
+               <?php } else { ?>
+              <h1>Usuário logado</h1>
+              <a href="cadastro-login.php?logout=true">Sair</a>
+              <?php } ?>
               </div>
             </div>
           </div>
-
-
-          <div class="user-required__col-sidebar">
-            <div class="user-required__sidebar">
-            </div>
-          </div>
-        </div>
 
       </div>
     </div>
