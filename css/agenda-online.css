@@ -950,6 +950,104 @@ font-weight: bold;
     width: 100%;
 }
 
+.user-required {
+    /* width: 990px; */
+    min-height: 100%;
+    background: #FFF;
+    -webkit-box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.75);
+    -moz-box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: -1px 5px 5px 0px rgba(0,0,0,0.75);
+}
+
+.user-required__row {
+    flex-wrap: wrap;
+    display: flex;
+}
+
+
+.user-required__data-box {
+padding: 30px;
+min-height: 100%;
+}
+
+.user-required__data-box__message-box {
+
+}
+
+.user-required__data-box__message-box-title {
+    font-size: 26px;
+    color: #1a1a1a;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.user-required__data-box__message-box-short-description {
+    font-size: 14px;
+    font-weight: normal;
+    color: #808080;
+    margin-top: 10px;
+}
+
+.user-required__data-box__form {
+    font-size: 14px;
+    font-weight: bold;
+    color: #808080;
+    margin-top: 10px;
+}
+
+.user-required__data-box__form-group br {
+    clear: left;
+
+}
+
+.user-required__data-box__form-group__label {
+    display: block;
+    font-size: 18px;
+    width: 11em;
+    padding: 0px 20px 10px 0;
+}
+
+.user-required__data-box__form-group__input {
+    display: block;
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ccc;
+    border-left: 1px solid #ccc;
+    color: #292929;
+    font-size: 18px;
+    background-color: #E9E9E9;
+    border: 1px solid #E9E9E9;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+
+.user-required__data-box__form-button {
+    margin: 10px auto 0;
+    display: block;
+    width: 100%;
+
+}
+
+.user-required__sidebar {
+    padding: 30px;
+    margin: 0;
+    background: #EFEFEF;
+    height: 100%;
+}
+
+
+
+.user-required__col-data {
+    width: 100%;
+}
+
+.user-required__col-sidebar {
+    width: 100%;
+}
+
+
 
 @media (min-width: 750px) {
     .checkout__col-data { width: 66.66%; }
@@ -965,5 +1063,10 @@ font-weight: bold;
     .ask-contact__col-sidebar { width: 33.33%;}
     .checkout-complete-data-box__order-box-details__head {text-align: right;float: left;}
     .checkout-complete-data-box__order-box-details__value {float:left;}
+    .user-required__col-data { width: 66.66%;}
+    .user-required__col-sidebar { width: 33.33%;}
+    .user-required__data-box__form-group__input {max-width:50%; float: left;}
+    .user-required__data-box__form-group__label {text-align: right; float:left;}
+    .user-required__data-box__form-button {width:50%;}
 }
 
